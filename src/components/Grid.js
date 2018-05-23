@@ -6,26 +6,24 @@ import AbstractWidget from './AbstractWidget'
 
 export default class Grid extends React.Component {
   static propTypes = {
-    dataSource: PropTypes.object.isRequired,
-    options: PropTypes.object,
+    collectionId: PropTypes.string.isRequired,
     onLoad: PropTypes.func,
   };
 
   static defaultProps = {
-    options: {},
     onLoad: () => {},
   };
 
   shouldComponentUpdate(nextProps) {
     const changed = (name) => !isEqual(this.props[name], nextProps[name])
-    return changed('dataSource') || changed('options')
+    return changed('collectionId')
   }
 
   ready = (tw, element, done) => {
-    const { dataSource, options, onLoad } = this.props
+    const { collectionId, onLoad } = this.props
 
     // Options and dataSource must be cloned since Twitter Widgets modifies it directly
-    tw.widgets.createGridFromCollection(cloneDeep(dataSource), element)
+    tw.widgets.createGridFromCollection(collectionId, element)
     .then(() => {
       // Widget is loaded
       done()
