@@ -51,11 +51,12 @@ var Grid = function (_React$Component) {
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Grid.__proto__ || Object.getPrototypeOf(Grid)).call.apply(_ref, [this].concat(args))), _this), _this.ready = function (tw, element, done) {
       var _this$props = _this.props,
           collectionId = _this$props.collectionId,
+          options = _this$props.options,
           onLoad = _this$props.onLoad;
 
-      // Options and dataSource must be cloned since Twitter Widgets modifies it directly
+      // Just need the collectionId and optional option. You can create a collection with tweetdeck (https://help.twitter.com/en/using-twitter/advanced-tweetdeck-features)
 
-      tw.widgets.createGridFromCollection(collectionId, element).then(function () {
+      tw.widgets.createGridFromCollection(collectionId, element, (0, _cloneDeep2.default)(options)).then(function () {
         // Widget is loaded
         done();
         onLoad();
@@ -71,7 +72,7 @@ var Grid = function (_React$Component) {
       var changed = function changed(name) {
         return !(0, _isEqual2.default)(_this2.props[name], nextProps[name]);
       };
-      return changed('collectionId');
+      return changed('collectionId') || changed('options');
     }
   }, {
     key: 'render',
@@ -85,9 +86,11 @@ var Grid = function (_React$Component) {
 
 Grid.propTypes = {
   collectionId: _propTypes2.default.string.isRequired,
+  options: _propTypes2.default.object,
   onLoad: _propTypes2.default.func
 };
 Grid.defaultProps = {
+  options: {},
   onLoad: function onLoad() {}
 };
 exports.default = Grid;
